@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { userController } = require("../controllers");
 
-router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
-});
+router.get("/", userController.findAll);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const goods = new Schema({
+const item = new Schema({
   name: {
     type: String,
     required: true,
@@ -15,16 +15,20 @@ const goods = new Schema({
     type: Number,
     default: 0,
   },
-  comments: [String],
+  comments: [
+    {
+      type: String,
+    },
+  ],
 });
 
 /**
  * Можливо, зробити так:
  */
 
-goods.methods.putLike = () => {};
-goods.methods.removeLike = () => {};
+// goods.methods.putLike = () => {};
+// goods.methods.removeLike = () => {};
 
-const Goods = mongoose.model("Goods", goods);
+const Item = mongoose.model("Item", item);
 
-module.exports = Goods;
+module.exports = Item;
