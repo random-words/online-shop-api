@@ -21,6 +21,10 @@ async function verify(req, res, next) {
   }
 }
 
+router.get("/", (req, res) => {
+  res.send("Main Page");
+});
+
 router.get("/register", (req, res) => {
   res.send("Register Page");
 });

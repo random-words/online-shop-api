@@ -1,22 +1,22 @@
 const { itemService } = require("../services");
 
-async function putForSale(req, res, next) {
-  const data = req.body;
-  try {
-    const item = await itemService.putForSale(data);
-    res.json({
-      status: "success",
-      code: 200,
-      data: {
-        item,
-      },
-    });
-    return item;
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-}
+// async function putForSale(req, res, next) {
+//   const data = req.body;
+//   try {
+//     const item = await itemService.putForSale(data);
+//     res.json({
+//       status: "success",
+//       code: 200,
+//       data: {
+//         item,
+//       },
+//     });
+//     return item;
+//   } catch (error) {
+//     console.error(error);
+//     next(error);
+//   }
+// }
 
 async function findAll(req, res, next) {
   const options = req.query;
@@ -71,10 +71,10 @@ async function findByName(req, res, next) {
         status: "success",
         code: 200,
         data: {
-          item,
+          items,
         },
       });
-      return item;
+      return items;
     }
     res.status(404).json({
       status: "error",
@@ -88,65 +88,65 @@ async function findByName(req, res, next) {
   }
 }
 
-async function update(req, res, next) {
-  const { id } = req.params;
-  try {
-    const itemToFind = await itemService.findById(id);
-    if (itemToFind) {
-      const updatedItem = await itemService.update(id, data);
-      res.json({
-        status: "success",
-        code: 200,
-        data: {
-          updatedItem,
-        },
-      });
-      return updatedItem;
-    }
-    res.status(404).json({
-      status: "error",
-      code: 404,
-      message: `Cannot find item with id: ${id}`,
-      data: "Not Found",
-    });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-}
+// async function update(req, res, next) {
+//   const { id } = req.params;
+//   try {
+//     const itemToFind = await itemService.findById(id);
+//     if (itemToFind) {
+//       const updatedItem = await itemService.update(id, data);
+//       res.json({
+//         status: "success",
+//         code: 200,
+//         data: {
+//           updatedItem,
+//         },
+//       });
+//       return updatedItem;
+//     }
+//     res.status(404).json({
+//       status: "error",
+//       code: 404,
+//       message: `Cannot find item with id: ${id}`,
+//       data: "Not Found",
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     next(error);
+//   }
+// }
 
-async function removeFromSale(req, res, next) {
-  const { id } = req.params;
-  try {
-    const itemToRemove = await itemService.findById(id);
-    if (itemToRemove) {
-      const deletedItem = await itemService.removeFromSale(id);
-      res.json({
-        status: "success",
-        code: 200,
-        data: {
-          deletedItem,
-        },
-      });
-      return deletedItem;
-    }
-    res.status(404).json({
-      status: "error",
-      code: 404,
-      message: `Cannot find item with id: ${id}`,
-      data: "Not Found",
-    });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-}
+// async function removeFromSale(req, res, next) {
+//   const { id } = req.params;
+//   try {
+//     const itemToRemove = await itemService.findById(id);
+//     if (itemToRemove) {
+//       const deletedItem = await itemService.removeFromSale(id);
+//       res.json({
+//         status: "success",
+//         code: 200,
+//         data: {
+//           deletedItem,
+//         },
+//       });
+//       return deletedItem;
+//     }
+//     res.status(404).json({
+//       status: "error",
+//       code: 404,
+//       message: `Cannot find item with id: ${id}`,
+//       data: "Not Found",
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     next(error);
+//   }
+// }
 
 module.exports = {
-  putForSale,
+  // putForSale,
   findAll,
   findById,
   findByName,
-  update,
-  removeFromSale,
+  // update,
+  // removeFromSale,
 };

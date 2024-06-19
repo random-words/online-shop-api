@@ -1,4 +1,4 @@
-const { userService } = require("../services");
+const { userService, itemService } = require("../services");
 
 async function registerUser(req, res, next) {
   const data = req.body;
@@ -126,9 +126,114 @@ async function deleteUser(req, res, next) {
   }
 }
 
+async function putForSale(req, res, next) {
+  const item = req.body;
+  try {
+    const itemForSale = await itemService.putForSale(item);
+    res.json({
+      status: "success",
+      code: 200,
+      data: {
+        itemForSale,
+      },
+    });
+    return itemForSale;
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+}
+
+async function removeFromSale(req, res, next) {
+  const { id } = req.params;
+  const { itemId } = req.body;
+  try {
+    const user = await userService.findById(id);
+    const item = await itemService.findById(itemId);
+
+    if (item.owner.id === user.id) {
+      const removedItem = await itemService.removeFromSale(itemId);
+      res.json({
+        status: "success",
+        code: 200,
+        data: {
+          removedItem,
+        },
+      });
+      return;
+    }
+    res.json({
+      status: "Error",
+      message: "Something Went Wrong",
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+}
+
 async function addToBasket(req, res, next) {
-  await userService.addToBasket();
-  console.log("ok");
+  const { id } = req.params;
+  const { itemId } = req.body;
+  try {
+    const user = await userService.findById(id);
+    const item = await itemService.findById(itemId);
+    if (item.owner.id === user.id) {
+      res.json({
+        message: "You cannot add you own item",
+      });
+      return;
+    }
+    if (item) {
+      await userService.update(id, { $push: { basket: item } });
+      res.json({
+        status: "success",
+        code: 200,
+        data: {
+          item,
+        },
+      });
+      return item;
+    }
+    res.json({
+      status: "Error",
+      message: "Cannot find this item",
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+}
+
+async function removeFromBasket(req, res, next) {
+  const { id } = req.params;
+  const { itemId } = req.body;
+  try {
+    const user = await userService.findById(id);
+    const item = await itemService.findById(itemId);
+    const isPresent = user.basket.find((el) => el.id === item.id);
+
+    if (isPresent) {
+      const updatedUser = await userService.update(id, {
+        $pull: { basket: item.id },
+      });
+      res.json({
+        status: "success",
+        code: 200,
+        data: {
+          updatedUser,
+        },
+      });
+      return updatedUser;
+    }
+    res.json({
+      status: "Error",
+      message: "You Don't Have This Item In Basket",
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 }
 
 module.exports = {
@@ -138,5 +243,8 @@ module.exports = {
   findById,
   update,
   deleteUser,
+  putForSale,
+  removeFromSale,
   addToBasket,
+  removeFromBasket,
 };

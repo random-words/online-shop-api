@@ -27,11 +27,6 @@ async function deleteUser(id) {
   return User.findByIdAndDelete(id);
 }
 
-// is that even work?
-async function addToBasket(item = "") {
-  return User.putIntoBasket(item);
-}
-
 module.exports = {
   registerUser,
   findAll,
@@ -39,5 +34,4 @@ module.exports = {
   findByData,
   update,
   deleteUser,
-  addToBasket,
 };
