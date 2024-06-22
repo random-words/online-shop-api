@@ -18,15 +18,28 @@ async function registerUser(req, res, next) {
   }
 }
 
-async function verify(verificationData) {
-  const username = await userService.findByData(verificationData.username);
-  const password = await userService.findByData(verificationData.password);
+async function verify(req, res, next) {
+  const { username, password } = req.body;
+  try {
+    const usernameData = await userService.findByData(username);
+    const passwordData = await userService.findByData(password);
 
-  if (username && password) {
-    return true;
+    if (usernameData && passwordData) {
+      next();
+      return;
+    }
+    res.json({
+      status: "error",
+      code: 400,
+      message: "Data Entered Wrong",
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
   }
-  return false;
 }
+
+// async function login(req, res, next) {}
 
 async function findAll(req, res, next) {
   const options = req.query;

@@ -1,4 +1,4 @@
-const { User } = require("./schemas");
+const { User } = require("../models");
 
 async function registerUser(data) {
   return User.create(data);

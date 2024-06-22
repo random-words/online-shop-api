@@ -1,4 +1,4 @@
-const { Item } = require("./schemas");
+const { Item } = require("../models");
 
 async function putForSale(data) {
   return Item.create(data);

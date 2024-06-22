@@ -6,6 +6,10 @@ router.get("/", (req, res) => {
   res.send("User's Main Page");
 });
 
+/**
+ * переробити так, як Влад в дс написав
+ */
+
 router.get("/all", userController.findAll);
 
 router.get("/:id", userController.findById);
